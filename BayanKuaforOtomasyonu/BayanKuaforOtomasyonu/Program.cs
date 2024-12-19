@@ -24,8 +24,8 @@ builder.Services.AddIdentity<AppUser, AppRole>(opt =>
     opt.Password.RequireLowercase = false;
     opt.Password.RequireUppercase = false;
     opt.SignIn.RequireConfirmedAccount = false;
-    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-    opt.Lockout.MaxFailedAccessAttempts = 4;
+    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+    opt.Lockout.MaxFailedAccessAttempts = 5;
 })
     .AddRoleManager<RoleManager<AppRole>>()
     .AddEntityFrameworkStores<AppDbContext>()

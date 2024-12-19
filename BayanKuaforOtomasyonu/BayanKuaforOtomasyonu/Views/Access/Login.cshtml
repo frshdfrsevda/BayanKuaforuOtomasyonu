@@ -1,0 +1,23 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Giriş Yap</h2>
+<form asp-area="" asp-controller="Access" asp-action="Login" method="post">
+    <div>
+        <label asp-for="EmailAddress"></label>
+        <input asp-for="EmailAddress" />
+        <span asp-validation-for="EmailAddress"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <button type="submit">Giriş yap</button>
+</form>
+
