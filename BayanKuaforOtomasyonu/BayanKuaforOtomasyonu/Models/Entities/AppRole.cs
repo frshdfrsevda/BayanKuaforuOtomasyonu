@@ -2,7 +2,7 @@
 
 namespace BayanKuaforOtomasyonu.Models.Entities
 {
-    public class AppRole : IdentityRole<string>
+    public class AppRole : IdentityRole
     {
     }
 }

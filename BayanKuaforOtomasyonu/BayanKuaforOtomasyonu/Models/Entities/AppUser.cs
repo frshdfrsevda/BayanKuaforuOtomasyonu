@@ -2,7 +2,8 @@
 
 namespace BayanKuaforOtomasyonu.Models.Entities
 {
-    public class AppUser : IdentityUser<string>
+    public class AppUser : IdentityUser
     {
+        public string NameSurname { get; set; }
     }
 }

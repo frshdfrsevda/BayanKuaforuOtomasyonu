@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BayanKuaforOtomasyonu")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6d3d3d34100a0b9fcc200b64cb64c1dccc4bb425")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c83b483988e8865163d696b435de0ed90e9a2ee3")]
 [assembly: System.Reflection.AssemblyProductAttribute("BayanKuaforOtomasyonu")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BayanKuaforOtomasyonu")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

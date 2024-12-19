@@ -1,0 +1,40 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels
+@model SignUpViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Kayıt Ol</h2>
+<form asp-area="" asp-controller="Access" asp-action="Register" method="post">
+    <div>
+        <label asp-for="NameSurname"></label>
+        <input asp-for="NameSurname" />
+        <span asp-validation-for="NameSurname"></span>
+    </div>
+
+    <div>
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" type="PhoneNumber" />
+        <span asp-validation-for="PhoneNumber"></span>
+    </div>
+
+    <div>
+        <label asp-for="EmailAddress"></label>
+        <input asp-for="EmailAddress" type="EmailAddress" />
+        <span asp-validation-for="EmailAddress"></span>
+    </div>
+
+    <div>
+        <label asp-for="Password"></label>
+        <input asp-for="Password" type="Password" />
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <div>
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" type="password" />
+        <span asp-validation-for="ConfirmPassword"></span>
+    </div>
+
+    <button type="submit">Kayıt ol</button>
+</form>
