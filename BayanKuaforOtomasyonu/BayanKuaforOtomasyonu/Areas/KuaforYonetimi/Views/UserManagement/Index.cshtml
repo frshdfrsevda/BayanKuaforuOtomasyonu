@@ -1,0 +1,92 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.UsersViewModels
+@model List<UserListViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kullanıcılar</h2>
+<table>
+    <tr>
+        <th>Ad Soyad</th>
+        <th>Email Adres</th>
+        <th>Telefon Numarası</th>
+        <th>Rol</th>
+        <th></th>
+    </tr>
+    @foreach(var user in Model){
+        <tr>
+            <td>@user.NameSurname</td>
+            <td>@user.EmailAddress</td>
+            <td>@user.PhoneNumber</td>
+            <td>@user.RoleName</td>
+            <td>
+                <button class="changeRoleBtn" data-userid="@user.Id" data-mail="@user.EmailAddress" data-role="@user.RoleName">Rol değiştir</button>
+            </td>
+        </tr>
+    }
+</table>
+<div>
+    <h4>Rol Değişikliği</h4>
+    <div>
+        <label>Kullanıcı</label>
+        <input disabled id="userName" />
+    </div>
+    <input type="hidden" id="userId" />
+    <input type="hidden" id="userRole" />
+    <div>
+        <label>Roller</label>
+        <select id="roleList" name="roleList">
+            <option value="">Bir rol seçin</option>
+            @foreach (var role in ViewBag.Roles as List<RoleViewModel>)
+            {
+                <option value="@role.RoleName">@role.RoleName</option>
+            }
+        </select>
+    </div>
+    <div>
+        <button id="saveRole" type="button">Kaydet</button>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $(".changeRoleBtn").click(function () {
+                let userId = $(this).data("userid");
+                let userMail = $(this).data("mail");
+                let userRole = $(this).data("role");
+
+                $("#userId").val(userId);
+                $("#userName").val(userMail);
+                $("#userRole").val(userRole);
+            });
+            $("#saveRole").click(function () {
+                let userId = $("#userId").val();
+                let selectedRole = $("#roleList").val();
+
+                if (!selectedRole) {
+                    alert("Lütfen bir rol seçin.");
+                    return;
+                }
+
+                $.ajax({
+                    url: '/KuaforYonetimi/UserManagement/UpdateUserRole',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        UserId: userId,
+                        RoleName: selectedRole
+                    }),
+                    success: function (response) {
+                        alert("Rol başarıyla güncellendi.");
+                        window.location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Bir hata oluştu: " + error);
+                    }
+                });
+            });
+
+        });
+    </script>
+}

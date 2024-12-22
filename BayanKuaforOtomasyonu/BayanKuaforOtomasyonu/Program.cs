@@ -1,5 +1,7 @@
 using BayanKuaforOtomasyonu.Data;
 using BayanKuaforOtomasyonu.Models.Entities;
+using BayanKuaforOtomasyonu.Services.Abstracts;
+using BayanKuaforOtomasyonu.Services.Managers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -41,6 +43,10 @@ builder.Services.ConfigureApplicationCookie(opt =>
     opt.LogoutPath = "/Access/LogOut"; // Çýkýþ 
     opt.AccessDeniedPath = "/Access/Denied"; // Eriþim engellendi
 });
+
+// Scopes
+builder.Services.AddScoped<IUserService,UserService>();
+
 
 var app = builder.Build();
 
