@@ -1,4 +1,6 @@
 using BayanKuaforOtomasyonu.Data;
+using BayanKuaforOtomasyonu.Data.Repos.Abstracts;
+using BayanKuaforOtomasyonu.Data.Repos.Repositories;
 using BayanKuaforOtomasyonu.Models.Entities;
 using BayanKuaforOtomasyonu.Services.Abstracts;
 using BayanKuaforOtomasyonu.Services.Managers;
@@ -46,6 +48,8 @@ builder.Services.ConfigureApplicationCookie(opt =>
 
 // Scopes
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IEmploymentService,EmploymentService>();
+builder.Services.AddScoped<IEmploymentRepository,EmploymentRepository>();
 
 
 var app = builder.Build();

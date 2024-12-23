@@ -21,6 +21,7 @@ namespace BayanKuaforOtomasyonu.Areas.KuaforYonetimi.Controllers
             ViewBag.Roles = _userService.GetAllRoles();
             return View(users);
         }
+        [HttpPost]
         public async Task<IActionResult> UpdateUserRole([FromBody]AddRoleViewModel addRoleViewModel)
         {
             await _userService.ChangeRoleAsync(addRoleViewModel);

@@ -1,0 +1,82 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.EmploymentViewModel
+@model List<UpdateEmploymentViewMedel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Hizmetler</h2>
+<div>
+    <input id="newEmployment" />
+    <button type="button" id="addEmployment">Ekle</button>
+</div>
+<table>
+    <tr>
+        <th>Hizmet</th>
+        <th>Güncelleme</th>
+        <th>Silme</th>
+    </tr>
+    @foreach(var employment in Model){
+        <tr>
+            <td>@employment.Name</td>
+            <td><input id="updName-@employment.Id" /><button type="button" data-id="@employment.Id" class="updNameBtn">Güncelle</button></td>
+            <td><a asp-area="KuaforYonetimi" asp-controller="Employments" asp-action="Delete" asp-route-id="@employment.Id">Sil</a></td>
+        </tr>
+    }
+</table>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $(".updNameBtn").click(function () {
+                let employmentId = $(this).data("id");
+                var inputId = "updName-"+employmentId;
+                let employmentName = $("#" + inputId).val();
+                if (!employmentName) {
+                    alert("Lütfen yeni ismi giriniz.");
+                    return;
+                }
+                $.ajax({
+                    url: '/KuaforYonetimi/Employments/Update',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        Id: employmentId,
+                        Name: employmentName
+                    }),
+                    success: function (response) {
+                        alert("Başarıyla güncellendi.");
+                        window.location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Bir hata oluştu: " + error);
+                    }
+                });
+
+            });
+            $("#addEmployment").click(function () {
+               let employmentName = $("#newEmployment").val();
+               if (!employmentName) {
+                    alert("Hizmet ismi boş bırakılamaz");
+                    return;
+                }
+               console.log(employmentName);
+                $.ajax({
+                    url: '/KuaforYonetimi/Employments/Add',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        Name:employmentName
+                    }),
+                    success: function (response) {
+                        alert("Başarıyla eklendi.");
+                        window.location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Bir hata oluştu: " + error);
+                    }
+                });
+            });
+
+        });
+    </script>
+}

@@ -26,4 +26,11 @@
     <Folder Include="Areas\KuaforYonetimi\Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Areas\KuaforYonetimi\Views\_ViewImports.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>
