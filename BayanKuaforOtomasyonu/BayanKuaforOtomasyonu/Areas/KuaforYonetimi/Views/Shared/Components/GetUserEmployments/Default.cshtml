@@ -1,0 +1,24 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.AppUserEmploymentViewModel
+@model List<UserEmploymentsViewModel>
+@if(Model != null && Model.Any()){
+    <h4>@Model.FirstOrDefault().UserName Çalışanının Hizmetleri</h4>
+
+    <table>
+        <tr>
+            <th>Hizmet</th>
+            <th>Fiyat</th>
+            <th>Süre</th>
+            <th></th>
+        </tr>
+        @foreach(var item in Model){
+            <tr>
+                <td>@item.EmploymentName</td>
+                <td>@item.Price</td>
+                <td>@item.Duration</td>
+                <td><a asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Delete" asp-route-id="@item.Id" asp-route-userId="@ViewBag.Id">Sil</a></td>
+            </tr>
+        }
+    </table>
+
+
+}

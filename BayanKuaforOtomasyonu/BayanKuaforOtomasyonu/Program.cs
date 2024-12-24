@@ -50,6 +50,8 @@ builder.Services.ConfigureApplicationCookie(opt =>
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<IEmploymentService,EmploymentService>();
 builder.Services.AddScoped<IEmploymentRepository,EmploymentRepository>();
+builder.Services.AddScoped<IUserEmploymentRepository,UserEmploymentRepository>();
+builder.Services.AddScoped<IUserEmploymentService, UserEmploymentService>();
 
 
 var app = builder.Build();

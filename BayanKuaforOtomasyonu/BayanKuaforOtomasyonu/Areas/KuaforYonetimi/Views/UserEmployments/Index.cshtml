@@ -1,0 +1,31 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.AppUserEmploymentViewModel
+@model UserEmploymentViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kullanıcı Hizmet</h2>
+<form method="post" asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Index">
+    <input type="hidden" asp-for="AppUserId" value="@ViewBag.UserId" />
+    <input type="hidden" asp-for="Id" />
+    <div>
+        <label asp-for="EmploymentId"></label>
+        <select asp-for="EmploymentId" asp-items="@ViewBag.SelectList"></select>
+        <span asp-validation-for="EmploymentId"></span>
+    </div>
+    <div>
+        <label asp-for="Price"></label>
+        <input asp-for="Price" />
+        <span asp-validation-for="Price"></span>
+    </div>
+    <div>
+        <label asp-for="Duration"></label>
+        <input asp-for="Duration" />
+        <span asp-validation-for="Duration"></span>
+    </div>
+    <div>
+        <button type="submit">Kaydet</button>
+    </div>
+</form>
+@await Component.InvokeAsync("GetUserEmployments", new { userId  = ViewBag.UserId})

@@ -21,6 +21,7 @@
             <td>@user.PhoneNumber</td>
             <td>@user.RoleName</td>
             <td>
+                <a asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Index" asp-route-id="@user.Id">Hizmet İşlemleri</a>
                 <button class="changeRoleBtn" data-userid="@user.Id" data-mail="@user.EmailAddress" data-role="@user.RoleName">Rol değiştir</button>
             </td>
         </tr>
