@@ -8,5 +8,6 @@ namespace BayanKuaforOtomasyonu.Services.Abstracts
         void UpdateEmployement(UpdateEmploymentViewMedel updateEmploymentViewMedel);
         void DeleteEmployement(int id);
         List<UpdateEmploymentViewMedel> GetAllEmployments();
+        List<EmploymentWithIncludesViewModel> GetAllEmploymentsWithIncludes();
     }
 }

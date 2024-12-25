@@ -1,8 +1,171 @@
-﻿@{
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.EmploymentViewModel
+@model List<EmploymentWithIncludesViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
+<div class="row">
+    <div class="col-md-8 col-12 reservation-cart">
+        <h2>Randevu Oluştur</h2>
+        <div style="margin-bottom:1em;">
+            <label class="d-block pb-1"><b>Hizmet Seçiniz</b></label>
+            <select id="serviceSelect" class="form-control">
+                <option value="">Bir hizmet seçin</option>
+                @foreach (var item in Model)
+                {
+                    <option value="@item.EmploymentId">@item.EmploymentName</option>
+                }
+            </select>
+        </div>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <div style="display:none" id="resultSection">
+            <table class="table" id="resultTable" style="display:none">
+                <thead class="thead">
+                    <tr class="row">
+                        <th class="col">Çalışan</th>
+                        <th class="col">İşlem Süresi</th>
+                        <th class="col">Fiyat</th>
+                        <th class="col"></th>
+                    </tr>
+                </thead>
+                <tbody class="tbody">
+                    <!-- Sonuçlar burada dinamik olarak eklenecek -->
+                </tbody>
+            </table>
+            <p id="resultParagraph" style="display:none">Seçilen hizmet için uygun çalışanımız bulunmuyor</p>
+        </div>
+    </div>
+    <div class="col-md-4 col-12 shopping-cart">
+        <h4>Sepetiniz</h4>
+        <div id="resultArea">
+            <!-- Sepet buraya eklenecek div'ler olacak -->
+        </div>
+
+        <!-- Sepet toplamları -->
+        <div id="totalsArea">
+            <span class="d-block"><b>Toplam Süre (dk):</b> <span id="totalDuration">0</span> </span>
+            <span class="d-block"><b>Toplam Fiyat (₺):</b> <span id="totalPrice">0.00</span></span>
+        </div>
+    </div>
 </div>
+
+
+
+
+@section Scripts{
+
+    <script>
+        document.getElementById('serviceSelect').addEventListener('change', function() {
+            var selectedEmploymentId = this.value;
+
+            if (selectedEmploymentId) {
+                document.getElementById('resultSection').style.display = 'block';
+                var resultTableBody = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+                resultTableBody.innerHTML = '';
+
+                // Modeli JavaScript objesine dönüştür
+                var selectedItem = @Html.Raw(Json.Serialize(Model));
+                // Seçilen EmploymentId'ye göre verileri bulalım
+                var selectedEmployment = selectedItem.find(item => item.employmentId.toString() === selectedEmploymentId.toString());
+
+
+                if (selectedEmployment && selectedEmployment.employmentInfos&& selectedEmployment.employmentInfos.length > 0) {
+                    selectedEmployment.employmentInfos.forEach(info => {
+                        var row = resultTableBody.insertRow();
+                        row.classList.add('row');  // row'a .row sınıfını ekliyoruz
+                        row.innerHTML = `
+                            <td class="col">${info.userName}</td>
+                            <td class="col">${info.duration}</td>
+                            <td class="col">${info.price}</td>
+                            <td class="col"><button type="button" data-userid="${info.userEmploymentId}" class="choose-employment-btn">Sepete Ekle</button></td>
+                        `;
+                    });
+                    document.getElementById('resultTable').style.display = 'block';
+                    document.getElementById('resultParagraph').style.display = 'none';
+                }else {
+                    document.getElementById('resultTable').style.display = 'none';
+                    document.getElementById('resultParagraph').style.display = 'block';
+                }
+            } else {
+                document.getElementById('resultSection').style.display = 'none';
+            }
+        });
+        $(document).on('click', '.choose-employment-btn', function () {
+            // Butondaki 'data-userid' değerini alalım
+            var userId = $(this).data('userid');
+
+            // AJAX isteği gönderelim
+            $.ajax({
+                url: '/Home/GetUserEmploymentData',  // Controller'daki action metodunun URL'sini buraya yazın
+                type: 'GET',  // veya 'POST' ihtiyacınıza göre
+                data: { userId: userId },  // Parametre olarak userId gönderiyoruz
+                success: function (response) {
+                    // Sepet alanı
+                    var resultArea = $('#resultArea');
+
+                    // Modelin bilgilerini alalım
+                    if (response) {
+                        // Yeni bir div öğesi oluşturuyoruz ve sepete ekliyoruz
+                        var newItemDiv = $('<div class="cart-item"></div>');
+
+                        // Sepete ekleyeceğimiz içeriği hazırlayalım
+                        newItemDiv.html(`
+                            <p><strong>Hizmet İsmi:</strong> ${response.employmentName}</p>
+                            <p><strong>Hizmeti Veren:</strong> ${response.userName}</p>
+                            <p><strong>Süre (dk):</strong> <span class="duration">${response.duration}</span> </p>
+                            <p><strong>Fiyat (₺):</strong> <span class="price">${response.price}</span></p>
+                            <button class="remove-item-btn" data-id="${response.id}">Remove</button>
+                        `);
+
+                        // Yeni öğeyi sepete ekliyoruz
+                        resultArea.append(newItemDiv);
+
+                        // Toplam süre ve fiyatı güncelle
+                        updateTotals(response.duration, response.price);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert('Hata oluştu: ' + error);
+                }
+            });
+        });
+
+        // Sepet öğesini silme işlemi
+        $(document).on('click', '.remove-item-btn', function () {
+            var itemId = $(this).data('id');
+
+            // Bu öğeyi sepetteki DOM'dan kaldırıyoruz
+            $(this).closest('.cart-item').remove();
+
+            // Kaldırılan öğeye ait bilgiyi alıp toplam süre ve fiyatı güncelle
+            var duration = parseInt($(this).closest('.cart-item').find('.duration').text());
+            var price = parseInt($(this).closest('.cart-item').find('.price').text());
+            console.log($(this).closest('.cart-item').find('.duration').text());
+            console.log($(this).closest('.cart-item').find('.price').text());
+
+            updateTotalsToRemove(duration, price);  // Kaldırılan öğeyi çıkarmak için negatif değerler gönderiyoruz
+        });
+
+        // Toplam süre ve fiyatı güncelleme fonksiyonu
+        var totalDuration = 0;
+        var totalPrice = 0;
+
+        function updateTotals(duration, price) {
+            totalDuration += duration;
+            totalPrice += price;
+            console.log(totalDuration);
+            console.log(totalPrice);
+            // Toplamları ekrana yazdır
+            $('#totalDuration').text(totalDuration);
+            $('#totalPrice').text(totalPrice.toFixed(2));
+        }
+        function updateTotalsToRemove(duration, price) {
+            totalDuration -= duration;
+            totalPrice -= price;
+
+            // Toplamları ekrana yazdır
+            $('#totalDuration').text(totalDuration);
+            $('#totalPrice').text(totalPrice.toFixed(2));
+        }
+    </script>
+
+}

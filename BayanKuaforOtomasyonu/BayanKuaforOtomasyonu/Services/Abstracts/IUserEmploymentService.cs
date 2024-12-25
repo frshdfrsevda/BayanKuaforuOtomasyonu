@@ -7,5 +7,6 @@ namespace BayanKuaforOtomasyonu.Services.Abstracts
         List<UserEmploymentsViewModel> GetAllUserEmployments(string userId);
         void CreateOrUpdateUserEmployment(UserEmploymentViewModel model);
         void DeleteUserEmployment(int id);
+        UserEmploymentsViewModel GetUserEmploymentById(int id);
     }
 }

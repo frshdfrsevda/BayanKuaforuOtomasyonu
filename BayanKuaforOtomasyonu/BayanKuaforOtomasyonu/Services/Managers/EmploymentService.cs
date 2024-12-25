@@ -42,6 +42,35 @@ namespace BayanKuaforOtomasyonu.Services.Managers
             return listModel;
         }
 
+        public List<EmploymentWithIncludesViewModel> GetAllEmploymentsWithIncludes()
+        {
+            var employmentsWithIncludes = _employmentRepository.GetAll("AppUserEmployements,AppUserEmployements.AppUser");
+            var listModel = new List<EmploymentWithIncludesViewModel>();
+            foreach(var item in employmentsWithIncludes)
+            {
+                var employmentInfos = new List<EmploymentInfoViewModel>();
+                foreach(var info in item.AppUserEmployements)
+                {
+                    var infoModel = new EmploymentInfoViewModel()
+                    {
+                        Duration = info.Duration,
+                        Price = info.Price,
+                        UserEmploymentId = info.Id,
+                        UserName = info.AppUser.NameSurname
+                    };
+                    employmentInfos.Add(infoModel);
+                }
+                var model = new EmploymentWithIncludesViewModel()
+                {
+                    EmploymentId = item.Id,
+                    EmploymentName = item.Name,
+                    EmploymentInfos = employmentInfos
+                };
+                listModel.Add(model);
+            }
+            return listModel;
+        }
+
         public void UpdateEmployement(UpdateEmploymentViewMedel updateEmploymentViewMedel)
         {
             var employment = _employmentRepository.GetById(updateEmploymentViewMedel.Id);

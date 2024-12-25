@@ -56,5 +56,17 @@ namespace BayanKuaforOtomasyonu.Services.Managers
             }
             return listModel;
         }
+
+        public UserEmploymentsViewModel GetUserEmploymentById(int id)
+        {
+            var value = _userEmploymentRepository.GetByIdWithProps(x=>x.Id== id, "Employment,AppUser");
+            return new UserEmploymentsViewModel() {
+                Id = value.Id,
+                EmploymentName = value.Employment.Name,
+                UserName = value.AppUser.NameSurname,
+                Duration = value.Duration,
+                Price = value.Price
+            };
+        }
     }
 }
