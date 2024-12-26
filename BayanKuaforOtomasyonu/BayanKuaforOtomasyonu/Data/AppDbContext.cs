@@ -16,41 +16,47 @@ namespace BayanKuaforOtomasyonu.Data
                 .HasOne(ae => ae.Employment)  
                 .WithMany(e => e.AppUserEmployements)
                 .HasForeignKey(ae => ae.EmploymentId) 
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // AppUserEmployement ile AppUser arasındaki ilişki
             modelBuilder.Entity<AppUserEmployement>()
                 .HasOne(ae => ae.AppUser)
                 .WithMany(e => e.AppUserEmployements)
                 .HasForeignKey(ae => ae.AppUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // AppUser ile Reservation arasındaki ilişki
             modelBuilder.Entity<Reservation>()
                 .HasOne(r => r.AppUser)
                 .WithMany(au => au.Reservations)
                 .HasForeignKey(r => r.AppUserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // ReservationDetail ile Reservation arasındaki ilişki
             modelBuilder.Entity<ReservationDetail>()
                 .HasOne(rd => rd.Reservation)
                 .WithMany(r => r.ReservationDetails)
                 .HasForeignKey(rd => rd.ResId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.NoAction);
 
             // ReservationDetail ile AppUserEmployement arasındaki ilişki
             modelBuilder.Entity<ReservationDetail>()
                .HasOne(rd => rd.AppUserEmployement)
                .WithMany(aue => aue.ReservationDetails)
                .HasForeignKey(rd => rd.AppUserEmploymentId)
-               .OnDelete(DeleteBehavior.Restrict);
+               .OnDelete(DeleteBehavior.NoAction);
 
-
+            // AppUser ile Reservation arasındaki ilişki
+            modelBuilder.Entity<ReservationStatus>()
+                .HasOne(r => r.Reservation)
+                .WithMany()
+                .HasForeignKey(r => r.ResId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
         public DbSet<Employment> Employments { get; set; }
         public DbSet<AppUserEmployement> AppUserEmployement { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ReservationDetail> ReservationDetails { get; set; }
+        public DbSet<ReservationStatus> reservationStatuses { get; set; }
     }
 }

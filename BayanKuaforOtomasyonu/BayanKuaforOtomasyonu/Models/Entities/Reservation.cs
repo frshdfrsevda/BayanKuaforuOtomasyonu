@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BayanKuaforOtomasyonu.Models.Entities
 {
     public class Reservation
     {
+        [Key]
         public int Id { get; set; }
         public string AppUserId { get; set; }
         [ForeignKey(nameof(AppUserId))]

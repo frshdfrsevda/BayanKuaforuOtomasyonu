@@ -49,7 +49,39 @@ namespace BayanKuaforOtomasyonu.Controllers
 
             return Json(new { success = true, message = "ok" });
         }
-
+        [HttpGet]
+        public IActionResult Reservations()
+        {
+            return View(_reservationService.GetAllByUser(User.Identity.Name));
+        }
+        [HttpPost]
+        public IActionResult UpdateReservationDate([FromBody] GeciciModel geciciModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Geçersiz veri gönderildi." });
+            }
+            var model = new ChangeDateResViewModel()
+            {
+                Id = int.Parse(geciciModel.Id),
+                ResDate = DateTime.Parse(geciciModel.ResDate),
+                ResTime = TimeSpan.Parse(geciciModel.ResTime)
+            };
+            var (isok, msg) = _reservationService.ChangeReservationDate(model);
+            if (isok)
+                _reservationService.ChangeStatusForUser(model.Id);
+            return Json(new { success = true, message = msg });
+        }
+        public IActionResult Decline(int resid)
+        {
+            _reservationService.DeclineRes(resid);
+            return RedirectToAction("Reservations", "Home", new { area = "" });
+        }
+        public IActionResult Accept(int resid)
+        {
+            _reservationService.ChangeStatusForUser(resid);
+            return RedirectToAction("Reservations", "Home", new { area = "" });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

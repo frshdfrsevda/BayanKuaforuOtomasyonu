@@ -1,0 +1,126 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.ReservationViewModels
+@model List<ReservationViewModel>
+@{
+    ViewData["Title"] = "Reservations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Randevu Takip</h2>
+@foreach (var reservation in Model)
+{
+    <div class="row">
+        <div class="col"><b>Tarih - Saat : </b>@reservation.ResDate.ToShortDateString() - @reservation.ResTime</div>
+        <div class="col"><b>Durum : </b>@reservation.ResStatement</div>
+        <div class="col"><button type="button" class="btn btn-info resDetailBtn">Detay</button></div>
+    </div>
+    <div class="res-detail">
+        @foreach (var detail in reservation.ResDetails)
+        {
+            <div class="row">
+                <div class="col">
+                    <b> Hizmet : </b> @detail.EmploymentName
+                </div>
+                <div class="col">
+                    <b> Çalışan : </b> @detail.UserEmploymentName
+                </div>
+                <div class="col">
+                    <b> Süre : </b> @detail.Duration
+                </div>
+                <div class="col">
+                    <b> Fiyat : </b> @detail.Price
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col">
+                <b>Toplam süre (dk) : </b> @reservation.TotalDuration
+            </div>
+            <div class="col">
+                <b>Toplam fiyat (₺) : </b> @reservation.TotalPrice
+            </div>
+            @if (reservation.ResStatus == null)
+            {
+                <div class="col">
+                    @{
+                        var dateFormat = @reservation.ResDate.ToString("yyyy-MM-ddTHH:mm");
+                    }
+                    <button data-resid="@reservation.ResId" data-resdate="@dateFormat" data-restime="@reservation.ResTime" class="resEditBtn btn btn-primary">Düzenle</button>
+                    @if (@reservation.ResStatement == "Beklemede - Kuaför tarafından düzenlendi"){
+                        <a asp-area="" asp-controller="Home" asp-action="Accept" asp-route-resid="@reservation.ResId">Onayla</a>
+                    }
+                    <a asp-area="" asp-controller="Home" asp-action="Decline" asp-route-resid="@reservation.ResId">Reddet</a>
+                </div>
+            }
+        </div>
+    </div>
+}
+<div>
+    <form method="post">
+        <input type="hidden" id="reservationid" />
+        <input id="reservationDate" type="datetime-local" />
+        <input id="reservationTime" type="time" />
+        <button id="saveRes" type="button" class="btn">Kaydet</button>
+    </form>
+</div>
+@section Scripts {
+    <script>
+        document.querySelectorAll('.resDetailBtn').forEach(button => {
+            button.addEventListener('click', function () {
+                // Butona en yakın .row class'ını bul
+                 const rowDiv = this.closest('.row');
+                const resDetailDiv = rowDiv.nextElementSibling;
+
+                // .res-detail div'ine show sınıfını toggle yap
+                if (resDetailDiv && resDetailDiv.classList.contains('res-detail')) {
+                    resDetailDiv.classList.toggle('show');
+                }
+            });
+        });
+        document.querySelectorAll('.resEditBtn').forEach(button => {
+            button.addEventListener('click', function () {
+                // Button'ın data attribute'larından değerleri al
+                const reservationId = this.getAttribute('data-resid');
+                const reservationDateTime = this.getAttribute('data-resdate');
+
+
+                const reservationTime = this.getAttribute('data-restime');
+
+                // Verileri inputlara yerleştir
+                document.getElementById('reservationid').value = reservationId;
+                document.getElementById('reservationDate').value =reservationDateTime;
+                document.getElementById('reservationTime').value = reservationTime;
+            });
+        });
+
+        document.getElementById('saveRes').addEventListener('click', function () {
+            // Form elemanlarından verileri al
+            const reservationId = document.getElementById('reservationid').value;
+            const reservationDate = document.getElementById('reservationDate').value;
+            const reservationTime = document.getElementById('reservationTime').value;
+
+            // AJAX ile POST isteği yap
+            $.ajax({
+                url: '/Home/UpdateReservationDate', // Controller ve Action ismini doğru gir
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    Id: reservationId,
+                    ResDate: reservationDate,
+                    ResTime: reservationTime
+                }),
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message); // Başarılı mesajını göster
+                        location.reload(); // Sayfayı yenile
+                    } else {
+                        alert('Bir hata oluştu: ' + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    alert('Bir hata oluştu: ' + xhr.responseText);
+                }
+            });
+        });
+    </script>
+}
+

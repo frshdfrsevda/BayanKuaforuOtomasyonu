@@ -48,12 +48,19 @@
         </main>
     </div>
     <div class="manager-bar-area">
-
+        <h6 id="hideManagerBarAreaBtn" class="text-end mb-0 py-1 px-2">X</h6>
+        <h3>Kuaför Yönetimi</h3>
+        <ul class="list-unstyled">
+            <li><a asp-area="KuaforYonetimi" asp-controller="UserManagement" asp-action="Index">Kullanıcılar</a></li>
+            <li><a asp-area="KuaforYonetimi" asp-controller="Employments" asp-action="Index">Hizmetler</a></li>
+            <li><a asp-area="KuaforYonetimi" asp-controller="Reservations" asp-action="Index">Randevular</a></li>
+            <li><a asp-area="" asp-controller="" asp-action="">Çalışan Takibi</a></li>
+        </ul>
     </div>
     <footer class="border-top footer text-muted">
         <div class="container">
             <ul class="list-unstyled d-flex justify-content-between">
-                <li><button class="btn btn-primary px-3" type="button">Kuaför Yönetimi</button></li>
+                <li><button id="showManagerBarAreaBtn" class="btn btn-primary px-3" type="button">Kuaför Yönetimi</button></li>
                 <li>&copy; @DateTime.Now.Date - Tüm hakları saklıdır</li>
             </ul>
         </div>
@@ -61,6 +68,23 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        const showBtn = document.getElementById("showManagerBarAreaBtn");
+        const hideBtn = document.getElementById("hideManagerBarAreaBtn");
+        const barArea = document.querySelector(".manager-bar-area");
+
+        showBtn.addEventListener("click", function () {
+            barArea.classList.remove("hide");
+            barArea.classList.add("show");
+
+        });
+
+        hideBtn.addEventListener("click", function () {
+            barArea.classList.remove("show");
+            barArea.classList.add("hide");
+
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

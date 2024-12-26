@@ -94,3 +94,72 @@ body {
 .choose-employment-btn:hover{
     background: #c7c55f;
 }
+
+
+
+/*
+    Kuafor YOnetim 
+*/
+.manager-bar-area.show {
+    transform: scaleY(1) scaleX(1); /* Aþaðýdan yukarý açýlma */
+    transform-origin: bottom;
+}
+.manager-bar-area.hide {
+    transform: scaleX(0); /* Saðdan sola kapanma */
+    transform-origin: left;
+}
+.manager-bar-area {
+    position: fixed;
+    width: 270px;
+    height: 80vh;
+    padding: 0;
+    margin: 0;
+    bottom: 0;
+    left: 0;
+    background: #1b6ec2;
+    border: 3px solid #1861ac;
+    z-index: 500;
+    overflow: hidden; /* Ýçeriðin taþmasýný önlemek için */
+    transform-origin: bottom; /* Açýlma noktasý */
+    transform: scaleY(0); /* Baþlangýçta tamamen kapalý */
+    transition: transform 0.5s ease, transform-origin 0.5s ease;
+}
+.manager-bar-area h6{
+    cursor:pointer;
+    color:#ae0000;
+    font-weight:800;
+}
+.manager-bar-area h6:hover{
+    background:#fcfbc6;
+}
+.manager-bar-area h3, .manager-bar-area ul, .manager-bar-area li, .manager-bar-area a{
+    padding:0;
+    margin:0;
+}
+.manager-bar-area h3{
+    margin-bottom:.2em;
+    padding:.4em;
+    border: 3px solid #1861ac;
+    border-bottom: 10px solid #1861ac;
+    color:aliceblue;
+}
+.manager-bar-area li:not(:last-child){
+    border-bottom:1px solid #1861ac;
+}
+.manager-bar-area a{
+    display:block;
+    padding:.6em 0 .6em 2em;
+    color:aliceblue;
+    text-decoration:none;
+    font-size:1.1srem;
+}
+.manager-bar-area a:hover{
+    background:#1861ac;
+}
+
+.res-detail{
+    display:none;
+}
+.res-detail.show{
+    display:block;
+}

@@ -4,6 +4,7 @@ using BayanKuaforOtomasyonu.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BayanKuaforOtomasyonu.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241221041440_table_add_reservationStatuses")]
+    partial class table_add_reservationStatuses
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -357,13 +360,13 @@ namespace BayanKuaforOtomasyonu.Migrations
                     b.HasOne("BayanKuaforOtomasyonu.Models.Entities.AppUser", "AppUser")
                         .WithMany("AppUserEmployements")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BayanKuaforOtomasyonu.Models.Entities.Employment", "Employment")
                         .WithMany("AppUserEmployements")
                         .HasForeignKey("EmploymentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppUser");
@@ -376,7 +379,7 @@ namespace BayanKuaforOtomasyonu.Migrations
                     b.HasOne("BayanKuaforOtomasyonu.Models.Entities.AppUser", "AppUser")
                         .WithMany("Reservations")
                         .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppUser");
@@ -387,13 +390,13 @@ namespace BayanKuaforOtomasyonu.Migrations
                     b.HasOne("BayanKuaforOtomasyonu.Models.Entities.AppUserEmployement", "AppUserEmployement")
                         .WithMany("ReservationDetails")
                         .HasForeignKey("AppUserEmploymentId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BayanKuaforOtomasyonu.Models.Entities.Reservation", "Reservation")
                         .WithMany("ReservationDetails")
                         .HasForeignKey("ResId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AppUserEmployement");
@@ -406,7 +409,7 @@ namespace BayanKuaforOtomasyonu.Migrations
                     b.HasOne("BayanKuaforOtomasyonu.Models.Entities.Reservation", "Reservation")
                         .WithMany()
                         .HasForeignKey("ResId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Reservation");
