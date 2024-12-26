@@ -47,10 +47,15 @@
             @RenderBody()
         </main>
     </div>
+    <div class="manager-bar-area">
 
+    </div>
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - BayanKuaforOtomasyonu - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <ul class="list-unstyled d-flex justify-content-between">
+                <li><button class="btn btn-primary px-3" type="button">Kuaför Yönetimi</button></li>
+                <li>&copy; @DateTime.Now.Date - Tüm hakları saklıdır</li>
+            </ul>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

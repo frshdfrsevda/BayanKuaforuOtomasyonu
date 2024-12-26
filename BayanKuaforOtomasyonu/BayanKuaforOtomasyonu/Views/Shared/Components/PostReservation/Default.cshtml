@@ -1,0 +1,36 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.ReservationViewModels
+@model AddReservationViewModel
+
+<form id="resPostForm" method="post" >
+   @* <div id="totalsArea">
+        <span class="d-block"><b>Toplam Süre (dk):</b> <span id="totalDuration">0</span> </span>
+        <span class="d-block"><b>Toplam Fiyat (₺):</b> <span id="totalPrice">0.00</span></span>
+    </div>*@
+    <input type="hidden" asp-for="ReservationDetailIds" id="ReservationDetailIds" />
+    <span asp-validation-for="ReservationDetailIds" class="text-danger"></span>
+    <div>
+        <label asp-for="TotalDuration" class="form-label"></label>
+        <input disabled id="totalDuration" value="@Model.TotalDuration" class="form-control" />
+        <input type="hidden" id="totalDurationHidden" asp-for="TotalDuration" class="form-control" />
+        <span asp-validation-for="TotalDuration" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="TotalPrice" class="form-label"></label>
+        <input disabled id="totalPrice" value="@Model.TotalPrice" class="form-control" />
+        <input type="hidden" id="totalPriceHidden" asp-for="TotalPrice" class="form-control" />
+        <span asp-validation-for="TotalPrice" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="ResDate" class="form-label"></label>
+        <input asp-for="ResDate" class="form-control" />
+        <span asp-validation-for="ResDate" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="ResTime" class="form-label"></label>
+        <input asp-for="ResTime" class="form-control" />
+        <span asp-validation-for="ResTime" class="text-danger"></span>
+    </div>
+    <div>
+        <button class="btn btn-secondary" type="submit">Oluştur</button>
+    </div>
+</form>

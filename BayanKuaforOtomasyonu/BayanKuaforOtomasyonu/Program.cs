@@ -52,6 +52,9 @@ builder.Services.AddScoped<IEmploymentService,EmploymentService>();
 builder.Services.AddScoped<IEmploymentRepository,EmploymentRepository>();
 builder.Services.AddScoped<IUserEmploymentRepository,UserEmploymentRepository>();
 builder.Services.AddScoped<IUserEmploymentService, UserEmploymentService>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IReservationDetailRepository, ReservationDetailRepository>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
 
 
 var app = builder.Build();

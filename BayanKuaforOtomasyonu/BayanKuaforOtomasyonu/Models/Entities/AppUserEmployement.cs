@@ -23,5 +23,6 @@ namespace BayanKuaforOtomasyonu.Models.Entities
         [Display(Name = "Fiyat")]
         [Required(ErrorMessage = "Fiyat alanı zorunludur!")]
         public int Price { get; set; }
+        public ICollection<ReservationDetail> ReservationDetails { get; set; }
     }
 }

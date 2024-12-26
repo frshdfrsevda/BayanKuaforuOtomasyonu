@@ -1,5 +1,5 @@
-﻿@using BayanKuaforOtomasyonu.Models.ViewModels.EmploymentViewModel
-@model List<EmploymentWithIncludesViewModel>
+﻿
+@model HomeIndexModel
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -10,7 +10,7 @@
             <label class="d-block pb-1"><b>Hizmet Seçiniz</b></label>
             <select id="serviceSelect" class="form-control">
                 <option value="">Bir hizmet seçin</option>
-                @foreach (var item in Model)
+                @foreach (var item in Model.ListModel)
                 {
                     <option value="@item.EmploymentId">@item.EmploymentName</option>
                 }
@@ -39,11 +39,9 @@
         <div id="resultArea">
             <!-- Sepet buraya eklenecek div'ler olacak -->
         </div>
-
-        <!-- Sepet toplamları -->
         <div id="totalsArea">
-            <span class="d-block"><b>Toplam Süre (dk):</b> <span id="totalDuration">0</span> </span>
-            <span class="d-block"><b>Toplam Fiyat (₺):</b> <span id="totalPrice">0.00</span></span>
+            <!-- Sepet toplamları -->
+            @await Component.InvokeAsync("PostReservation",@Model.ResModel)
         </div>
     </div>
 </div>
@@ -63,7 +61,7 @@
                 resultTableBody.innerHTML = '';
 
                 // Modeli JavaScript objesine dönüştür
-                var selectedItem = @Html.Raw(Json.Serialize(Model));
+                var selectedItem = @Html.Raw(Json.Serialize(Model.ListModel));
                 // Seçilen EmploymentId'ye göre verileri bulalım
                 var selectedEmployment = selectedItem.find(item => item.employmentId.toString() === selectedEmploymentId.toString());
 
@@ -119,6 +117,22 @@
                         // Yeni öğeyi sepete ekliyoruz
                         resultArea.append(newItemDiv);
 
+                        // ReservationDetailIds id'li input'a userid ekliyoruz
+                        var reservationInput = $('#ReservationDetailIds');
+                        var currentIds = reservationInput.val();
+
+                        // Eğer input boş değilse, mevcut değeri virgülle ayırıyoruz
+                        if (currentIds) {
+                            var idsArray = currentIds.split(',');  // Mevcut diziye dönüştür
+                            // Aynı userId'nin zaten eklenip eklenmediğini kontrol ediyoruz
+                            idsArray.push(userId);  // Yeni userId'yi ekliyoruz
+                            reservationInput.val(idsArray.join(','));  // Diziyi tekrar virgüllerle ayırıp inputa koyuyoruz
+                           
+                        } else {
+                            reservationInput.val(userId);  // İlk defa değer ekliyorsak sadece userId ekliyoruz
+                        }
+
+
                         // Toplam süre ve fiyatı güncelle
                         updateTotals(response.duration, response.price);
                     }
@@ -142,6 +156,21 @@
             console.log($(this).closest('.cart-item').find('.duration').text());
             console.log($(this).closest('.cart-item').find('.price').text());
 
+
+            // ReservationDetailIds id'li input'tan ilgili userid değerini çıkarıyoruz
+            var reservationInput = $('#ReservationDetailIds');
+            var currentIds = reservationInput.val();
+
+            if (currentIds) {
+                var idsArray = currentIds.split(',');  // Mevcut diziye dönüştür
+                // Eşleşen userId'nin ilk karşılaşmasını çıkarıyoruz
+                var index = idsArray.indexOf(itemId.toString());
+                if (index > -1) {
+                    idsArray.splice(index, 1);  // İlk eşleşeni çıkarıyoruz
+                    reservationInput.val(idsArray.join(','));  // Diziyi tekrar virgüllerle ayırıp inputa koyuyoruz
+                }
+            }
+
             updateTotalsToRemove(duration, price);  // Kaldırılan öğeyi çıkarmak için negatif değerler gönderiyoruz
         });
 
@@ -155,17 +184,46 @@
             console.log(totalDuration);
             console.log(totalPrice);
             // Toplamları ekrana yazdır
-            $('#totalDuration').text(totalDuration);
-            $('#totalPrice').text(totalPrice.toFixed(2));
+            $('#totalDuration').val(totalDuration);
+            $('#totalPrice').val(totalPrice);
+            $('#totalDurationHidden').val(totalDuration);
+            $('#totalPriceHidden').val(totalPrice);
         }
         function updateTotalsToRemove(duration, price) {
             totalDuration -= duration;
             totalPrice -= price;
 
             // Toplamları ekrana yazdır
-            $('#totalDuration').text(totalDuration);
-            $('#totalPrice').text(totalPrice.toFixed(2));
+            $('#totalDuration').val(totalDuration);
+            $('#totalPrice').val(totalPrice);
+            $('#totalDurationHidden').val(totalDuration);
+            $('#totalPriceHidden').val(totalPrice);
         }
+
+
+
+        $(document).on('submit', '#resPostForm', function (e) {
+            e.preventDefault(); // Sayfanın yenilenmesini engelle
+            var form = $(this);
+            $.ajax({
+                url: '/Home/CreateReservation',
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        // Başarılı ise sayfayı yenile
+                        window.location.reload();
+                    }else{
+                        $('#totalsArea').html(response);
+                    }
+                    
+                },
+                error: function (xhr) {
+                    alert('Hata oluştu!');
+                }
+            });
+        });
+
     </script>
 
 }
