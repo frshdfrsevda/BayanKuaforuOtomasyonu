@@ -1,0 +1,20 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.EmploymentViewModel
+@model List<EmploymentTrackViewModel>
+<h2>Hizmet Takibi</h2>
+<table class="table">
+    <thead class="tracking">
+        <tr>
+            <th>Hizmet</th>
+            <th>Randevular (Adet)</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -6,12 +6,12 @@
 }
 
 <h2>Hizmetler</h2>
-<div>
-    <input id="newEmployment" />
-    <button type="button" id="addEmployment">Ekle</button>
+<div class="my-3">
+    <input id="newEmployment" placeholder="Hizmet ismi giriniz"/>
+    <button type="button" class="btn btn-default-small" id="addEmployment">Ekle</button>
 </div>
-<table>
-    <tr>
+<table class="table table-striped">
+    <tr class="tracking">
         <th>Hizmet</th>
         <th>Güncelleme</th>
         <th>Silme</th>
@@ -19,8 +19,8 @@
     @foreach(var employment in Model){
         <tr>
             <td>@employment.Name</td>
-            <td><input id="updName-@employment.Id" /><button type="button" data-id="@employment.Id" class="updNameBtn">Güncelle</button></td>
-            <td><a asp-area="KuaforYonetimi" asp-controller="Employments" asp-action="Delete" asp-route-id="@employment.Id">Sil</a></td>
+            <td><input id="updName-@employment.Id" placeholder="Güncel hizmet ismini giriniz" /><button type="button" data-id="@employment.Id" class="updNameBtn btn btn-default-small">Güncelle</button></td>
+            <td><a asp-area="KuaforYonetimi" asp-controller="Employments" asp-action="Delete" asp-route-id="@employment.Id" class="btn btn-default-small text-dark">Sil</a></td>
         </tr>
     }
 </table>

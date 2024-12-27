@@ -6,8 +6,8 @@
 }
 
 <h2>Kullanıcılar</h2>
-<table>
-    <tr>
+<table class="table table-striped">
+    <tr class="tracking">
         <th>Ad Soyad</th>
         <th>Email Adres</th>
         <th>Telefon Numarası</th>
@@ -20,34 +20,37 @@
             <td>@user.EmailAddress</td>
             <td>@user.PhoneNumber</td>
             <td>@user.RoleName</td>
-            <td>
-                <a asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Index" asp-route-id="@user.Id">Hizmet İşlemleri</a>
-                <button class="changeRoleBtn" data-userid="@user.Id" data-mail="@user.EmailAddress" data-role="@user.RoleName">Rol değiştir</button>
+            <td class="d-flex justify-content-around">
+                <a asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Index" asp-route-id="@user.Id" class=" btn btn-default-small">Hizmet İşlemleri</a>
+                <button class="changeRoleBtn btn btn-default-small" data-userid="@user.Id" data-mail="@user.EmailAddress" data-role="@user.RoleName">Rol değiştir</button>
             </td>
         </tr>
     }
 </table>
-<div>
+<div class="edit-res-modal">
     <h4>Rol Değişikliği</h4>
-    <div>
-        <label>Kullanıcı</label>
-        <input disabled id="userName" />
-    </div>
-    <input type="hidden" id="userId" />
-    <input type="hidden" id="userRole" />
-    <div>
-        <label>Roller</label>
-        <select id="roleList" name="roleList">
-            <option value="">Bir rol seçin</option>
-            @foreach (var role in ViewBag.Roles as List<RoleViewModel>)
-            {
-                <option value="@role.RoleName">@role.RoleName</option>
-            }
-        </select>
-    </div>
-    <div>
-        <button id="saveRole" type="button">Kaydet</button>
-    </div>
+    <form>
+        <div>
+            <b class="d-block">Kullanıcı</b>
+            <input disabled id="userName" />
+        </div>
+        <input type="hidden" id="userId" />
+        <input type="hidden" id="userRole" />
+        <div>
+            <b class="d-block">Roller</b>
+            <select id="roleList" name="roleList">
+                <option value="">Bir rol seçin</option>
+                @foreach (var role in ViewBag.Roles as List<RoleViewModel>)
+                {
+                    <option value="@role.RoleName">@role.RoleName</option>
+                }
+            </select>
+        </div>
+        <div>
+            <button id="saveRole" type="button" class="btn btn-role">Kaydet</button>
+            <button id="clsResModal" type="button" class="btn btn-role">İptal et</button>
+        </div>
+    </form>
 </div>
 @section Scripts{
     <script>
@@ -60,11 +63,16 @@
                 $("#userId").val(userId);
                 $("#userName").val(userMail);
                 $("#userRole").val(userRole);
+                document.querySelector(".edit-res-modal").classList.add("show");
+            });
+            document.getElementById('clsResModal').addEventListener("click", function () {
+                document.querySelector(".edit-res-modal").classList.remove("show");
+
             });
             $("#saveRole").click(function () {
                 let userId = $("#userId").val();
                 let selectedRole = $("#roleList").val();
-
+                document.querySelector(".edit-res-modal").classList.remove("show");
                 if (!selectedRole) {
                     alert("Lütfen bir rol seçin.");
                     return;

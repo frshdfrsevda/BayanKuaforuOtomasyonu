@@ -6,26 +6,26 @@
 }
 
 <h2>Kullanıcı Hizmet</h2>
-<form method="post" asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Index">
+<form method="post" asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Index" class="mb-4">
     <input type="hidden" asp-for="AppUserId" value="@ViewBag.UserId" />
     <input type="hidden" asp-for="Id" />
-    <div>
-        <label asp-for="EmploymentId"></label>
-        <select asp-for="EmploymentId" asp-items="@ViewBag.SelectList"></select>
+    <div class="mb-2">
+        <b><label asp-for="EmploymentId"></label></b>
+        <select asp-for="EmploymentId" asp-items="@ViewBag.SelectList" class="form-control"></select>
         <span asp-validation-for="EmploymentId"></span>
     </div>
-    <div>
-        <label asp-for="Price"></label>
-        <input asp-for="Price" />
+    <div class="mb-2">
+        <b><label asp-for="Price"></label></b>
+        <input asp-for="Price" class="form-control" />
         <span asp-validation-for="Price"></span>
     </div>
-    <div>
-        <label asp-for="Duration"></label>
-        <input asp-for="Duration" />
+    <div class="mb-2">
+        <b><label asp-for="Duration"></label></b>
+        <input asp-for="Duration" class="form-control" />
         <span asp-validation-for="Duration"></span>
     </div>
     <div>
-        <button type="submit">Kaydet</button>
+        <button type="submit" class="form-control btn btn-primary">Kaydet</button>
     </div>
 </form>
 @await Component.InvokeAsync("GetUserEmployments", new { userId  = ViewBag.UserId})

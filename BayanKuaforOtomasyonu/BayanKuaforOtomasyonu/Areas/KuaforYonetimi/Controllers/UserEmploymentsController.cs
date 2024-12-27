@@ -11,10 +11,12 @@ namespace BayanKuaforOtomasyonu.Areas.KuaforYonetimi.Controllers
     {
         private readonly IUserEmploymentService _userEmploymentService;
         private readonly IEmploymentService _employmentService;
-        public UserEmploymentsController(IUserEmploymentService userEmploymentService, IEmploymentService employmentService)
+        private readonly ITrackingService _trackingService;
+        public UserEmploymentsController(IUserEmploymentService userEmploymentService, IEmploymentService employmentService, ITrackingService trackingService)
         {
             _userEmploymentService = userEmploymentService;
             _employmentService = employmentService;
+            _trackingService = trackingService;
         }
         public IActionResult LoadUserEmploymentsTable(string userid)
         {
@@ -45,6 +47,10 @@ namespace BayanKuaforOtomasyonu.Areas.KuaforYonetimi.Controllers
         public IActionResult Delete(int id, string userId) {
             _userEmploymentService.DeleteUserEmployment(id);
             return RedirectToAction("Index", "UserEmployments", new { area = "KuaforYonetimi", id = userId });
+        }
+        public IActionResult Tracking()
+        {
+            return View(_trackingService.GetAllEmployeesTracking());
         }
     }
 }

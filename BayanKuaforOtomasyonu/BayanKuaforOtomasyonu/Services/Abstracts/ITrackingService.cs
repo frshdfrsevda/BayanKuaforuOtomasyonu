@@ -1,7 +1,11 @@
-﻿namespace BayanKuaforOtomasyonu.Services.Abstracts
+﻿using BayanKuaforOtomasyonu.Models.ViewModels.AppUserEmploymentViewModel;
+using BayanKuaforOtomasyonu.Models.ViewModels.EmploymentViewModel;
+
+namespace BayanKuaforOtomasyonu.Services.Abstracts
 {
     public interface ITrackingService
     {
-        void GetAllEmployeesTracking();
+        List<EmployeeTrackingViewModel> GetAllEmployeesTracking();
+        List<EmploymentTrackViewModel> GetAllEmploymentsTracking();
     }
 }

@@ -4,37 +4,40 @@
     ViewData["Title"] = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Kayıt Ol</h2>
-<form asp-area="" asp-controller="Access" asp-action="Register" method="post">
-    <div>
-        <label asp-for="NameSurname"></label>
-        <input asp-for="NameSurname" />
-        <span asp-validation-for="NameSurname"></span>
-    </div>
+<div class="col-lg-6 col-md-8 col-12 mx-auto">
+    <h2>Kayıt Ol</h2>
+    <form asp-area="" asp-controller="Access" asp-action="Register" method="post" class="col-11 mx-auto">
+        <div class ="mb-3 mt-3">
+            <b class="d-block"><label asp-for="NameSurname" class="form-label"></label></b>
+            <input asp-for="NameSurname" class="form-control" />
+            <span asp-validation-for="NameSurname"></span>
+        </div>
 
-    <div>
-        <label asp-for="PhoneNumber"></label>
-        <input asp-for="PhoneNumber" type="PhoneNumber" />
-        <span asp-validation-for="PhoneNumber"></span>
-    </div>
+        <div class="mb-3">
+            <b class="d-block"><label asp-for="PhoneNumber"></label></b>
+            <input asp-for="PhoneNumber" type="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber"></span>
+        </div>
 
-    <div>
-        <label asp-for="EmailAddress"></label>
-        <input asp-for="EmailAddress" type="EmailAddress" />
-        <span asp-validation-for="EmailAddress"></span>
-    </div>
+        <div class="mb-3">
+            <b class="d-block"><label asp-for="EmailAddress"></label></b>
+            <input asp-for="EmailAddress" type="EmailAddress" class="form-control" />
+            <span asp-validation-for="EmailAddress"></span>
+        </div>
 
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="Password" />
-        <span asp-validation-for="Password"></span>
-    </div>
+        <div class="mb-3">
+            <b class="d-block"><label asp-for="Password"></label></b>
+            <input asp-for="Password" type="Password" class="form-control" />
+            <span asp-validation-for="Password"></span>
+        </div>
 
-    <div>
-        <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" type="password" />
-        <span asp-validation-for="ConfirmPassword"></span>
-    </div>
+        <div class="mb-3">
+            <b class="d-block"><label asp-for="ConfirmPassword"></label></b>
+            <input asp-for="ConfirmPassword" type="password" class="form-control" />
+            <span asp-validation-for="ConfirmPassword"></span>
+        </div>
 
-    <button type="submit">Kayıt ol</button>
-</form>
+        <button type="submit" class="form-control btn btn-primary">Kayıt ol</button>
+    </form>
+
+</div>

@@ -1,0 +1,31 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.AppUserEmploymentViewModel
+@model List<EmployeeTrackingViewModel>
+@{
+    ViewData["Title"] = "Tracking";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@await Component.InvokeAsync("GetEmploymentsTracking")
+<h2>Çalışan Takibi</h2>
+<table class="table">
+    <thead class="tracking">
+        <tr>
+            <th>Çalışan</th>
+            <th>Randevu</th>
+            <th>Para</th>
+            <th>Çalışma Puanı</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var item in Model){
+            <tr>
+                <td>@item.EmployeeName</td>
+                <td>@item.TotalReservation</td>
+                <td>@item.TotalMoney</td>
+                @{
+                    int money = item.TotalMoney; int res = item.TotalReservation; int rate = money / res;
+                }
+                <td>@rate</td>
+            </tr>
+        }
+    </tbody>
+</table>

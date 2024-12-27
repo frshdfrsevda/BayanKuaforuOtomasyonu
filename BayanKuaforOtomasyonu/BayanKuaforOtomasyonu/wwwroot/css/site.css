@@ -12,14 +12,41 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+#showManagerBarAreaBtn {
+    background: #4b0606;
+    color: #fcfbc6;
+    /*#ae0000*/
+}
 html {
   position: relative;
   min-height: 100%;
 }
-
+.default-color {
+    color: #fcfbc6;
+}
+.default-border {
+    border: 2px solid #a74848;
+}
+h2 {
+    border-bottom: 2px solid #c7c55f;
+    padding-top: .3em;
+    padding-bottom: .3em;
+}
 body {
   margin-bottom: 60px;
 }
+.bg-navbar {
+    background: linear-gradient(to right, #a74848, #fcfbc6);
+}
+footer {
+    background: #a74848;
+}
+footer li{
+    color: #fcfbc6;
+}
+
+
+
 /*
     Anasayfa randevu tasarýmý
 */
@@ -41,10 +68,8 @@ body {
 }
 .shopping-cart #totalsArea{
     background:#c7c55f;
-    position:sticky;
     bottom:0;
     width:100%;
-    height:200px;
 }
 .shopping-cart #resultArea .cart-item{
     background:linear-gradient(to bottom,#fcfbc6,#e5e5e5);
@@ -116,8 +141,8 @@ body {
     margin: 0;
     bottom: 0;
     left: 0;
-    background: #1b6ec2;
-    border: 3px solid #1861ac;
+    background: #a74848;
+    border: 3px solid #8f2525;
     z-index: 500;
     overflow: hidden; /* Ýçeriðin taþmasýný önlemek için */
     transform-origin: bottom; /* Açýlma noktasý */
@@ -126,11 +151,13 @@ body {
 }
 .manager-bar-area h6{
     cursor:pointer;
-    color:#ae0000;
+    color:#a74848;
+    background:#8f2525;
     font-weight:800;
 }
 .manager-bar-area h6:hover{
-    background:#fcfbc6;
+    background:#a74848;
+    color:#fcfbc6;
 }
 .manager-bar-area h3, .manager-bar-area ul, .manager-bar-area li, .manager-bar-area a{
     padding:0;
@@ -139,27 +166,121 @@ body {
 .manager-bar-area h3{
     margin-bottom:.2em;
     padding:.4em;
-    border: 3px solid #1861ac;
-    border-bottom: 10px solid #1861ac;
-    color:aliceblue;
+    border: 3px solid #8f2525;
+    border-bottom: 15px solid #8f2525;
+    color:#fcfbc6;
 }
 .manager-bar-area li:not(:last-child){
-    border-bottom:1px solid #1861ac;
+    border-bottom:1px solid #4b0606;
 }
 .manager-bar-area a{
     display:block;
     padding:.6em 0 .6em 2em;
-    color:aliceblue;
+    color:#fcfbc6;
     text-decoration:none;
     font-size:1.1srem;
 }
 .manager-bar-area a:hover{
-    background:#1861ac;
+    background:linear-gradient(to right,#c7c55f,#fcfbc6,#c7c55f);
+    color:#a74848;
 }
-
-.res-detail{
-    display:none;
+.res-detail {
+    display: none;
 }
 .res-detail.show{
     display:block;
+}
+
+/*
+    randevu takip tablosu
+*/
+.res-tr {
+    background: #c7c55f;
+    margin-bottom: .5em;
+    align-items: center;
+    padding: .3em 0;
+}
+.res-detail {
+    background: #fcfbc6;
+    padding: .3em;
+}
+.res-detail .row{
+    border: 1px solid #a74848;
+    margin-bottom:.2em;
+    padding:.3em;
+    align-items:center;
+}
+.res-detail .res-op{
+    background:#98976f;
+    align-items:center;
+}
+.resDetailBtn {
+    background: #a74848;
+    color: #fcfbc6;
+    font-weight: 600;
+    display: block;
+    width: 100%;
+}
+.btn-default {
+    color: #fcfbc6;
+    font-weight: 600;
+    width: 25%;
+    border: 3px solid #a74848;
+}
+.btn-default-small {
+    color: #fcfbc6;
+    font-weight: 600;
+    padding:1px 1em;
+    margin:0 1em;
+    color:black;
+    border: 3px solid #a74848;
+}
+.edit-res-modal {
+    background: linear-gradient(to bottom,#fcfbc6,#e5e5e5, #fcfbc6);
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    border: 5px solid #a74848;
+}
+.edit-res-modal.show {
+    display: inline-block;
+}
+.edit-res-modal form {
+    padding: 0 5em 8em 5em;
+}
+.edit-res-modal h4{
+    padding:1.5em 5em 1em 5em;
+    border-bottom:15px solid #a74848;
+    margin-bottom:1.5em;
+}
+.edit-res-modal input{
+    display:block;
+    width:100%;
+    margin-bottom:1em;
+}.edit-res-modal select{
+    display:block;
+    width:100%;
+    margin-bottom:1em;
+}
+.edit-res-modal button{
+    color: black;
+    font-weight: 600;
+    width: 25%;
+    border: 3px solid #a74848;
+}
+/*
+    istatistikler
+*/
+
+.tracking {
+    background: #fcfbc6;
+}
+tr,td,th,table{
+    align-items:center;
+}
+.btn-role{
+    padding:0;
+    width:auto;
 }

@@ -7,10 +7,10 @@
 <h2>Randevu Takip</h2>
 @foreach (var reservation in Model)
 {
-    <div class="row">
+    <div class="row res-tr">
         <div class="col"><b>Tarih - Saat : </b>@reservation.ResDate.ToShortDateString() - @reservation.ResTime</div>
         <div class="col"><b>Durum : </b>@reservation.ResStatement</div>
-        <div class="col"><button type="button" class="btn btn-info resDetailBtn">Detay</button></div>
+        <div class="col"><button type="button" class="btn resDetailBtn">Detay</button></div>
     </div>
     <div class="res-detail">
         @foreach (var detail in reservation.ResDetails)
@@ -30,7 +30,7 @@
                 </div>
             </div>
         }
-        <div class="row">
+        <div class="row res-op">
             <div class="col">
                 <b>Toplam süre (dk) : </b> @reservation.TotalDuration
             </div>
@@ -43,22 +43,26 @@
                     @{
                         var dateFormat = @reservation.ResDate.ToString("yyyy-MM-ddTHH:mm");
                     }
-                    <button data-resid="@reservation.ResId" data-resdate="@dateFormat" data-restime="@reservation.ResTime" class="resEditBtn btn btn-primary">Düzenle</button>
+                    <button data-resid="@reservation.ResId" data-resdate="@dateFormat" data-restime="@reservation.ResTime" class="resEditBtn btn btn-default">Düzenle</button>
                     @if (@reservation.ResStatement == "Beklemede - Kuaför tarafından düzenlendi"){
-                        <a asp-area="" asp-controller="Home" asp-action="Accept" asp-route-resid="@reservation.ResId">Onayla</a>
+                        <a asp-area="" asp-controller="Home" asp-action="Accept" asp-route-resid="@reservation.ResId" class="btn btn-default">Onayla</a>
                     }
-                    <a asp-area="" asp-controller="Home" asp-action="Decline" asp-route-resid="@reservation.ResId">Reddet</a>
+                    <a asp-area="" asp-controller="Home" asp-action="Decline" asp-route-resid="@reservation.ResId" class="btn btn-default">Reddet</a>
                 </div>
             }
         </div>
     </div>
 }
-<div>
+<div class="edit-res-modal">
+    <h4>Tarih - Saat Güncelleme</h4>
     <form method="post">
         <input type="hidden" id="reservationid" />
+        <b class="d-block">Tarih</b>
         <input id="reservationDate" type="datetime-local" />
+        <b class="d-block">Saat</b>
         <input id="reservationTime" type="time" />
         <button id="saveRes" type="button" class="btn">Kaydet</button>
+        <button id="clsResModal" type="button" class="btn">İptal et</button>
     </form>
 </div>
 @section Scripts {
@@ -88,9 +92,13 @@
                 document.getElementById('reservationid').value = reservationId;
                 document.getElementById('reservationDate').value =reservationDateTime;
                 document.getElementById('reservationTime').value = reservationTime;
+                document.querySelector(".edit-res-modal").classList.add("show");
             });
         });
+        document.getElementById('clsResModal').addEventListener("click", function () {
+            document.querySelector(".edit-res-modal").classList.remove("show");
 
+        });
         document.getElementById('saveRes').addEventListener('click', function () {
             // Form elemanlarından verileri al
             const reservationId = document.getElementById('reservationid').value;
