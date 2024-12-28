@@ -1,11 +1,13 @@
 ﻿using BayanKuaforOtomasyonu.Models;
 using BayanKuaforOtomasyonu.Models.ViewModels.ReservationViewModels;
 using BayanKuaforOtomasyonu.Services.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BayanKuaforOtomasyonu.Areas.KuaforYonetimi.Controllers
 {
     [Area("KuaforYonetimi")]
+    [Authorize(Roles = "Admin")]
     public class ReservationsController : Controller
     {
         private readonly IReservationService _reservationService;

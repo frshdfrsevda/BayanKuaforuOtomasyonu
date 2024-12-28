@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Kullanıcı Hizmet</h2>
+<h2>Kullanıcı Hizmet<a asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="EmployeeShift" asp-route-userid="@ViewBag.UserId" class="btn float-end default-border">Hizmet Saatlerini Yönet</a></h2>
 <form method="post" asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Index" class="mb-4">
     <input type="hidden" asp-for="AppUserId" value="@ViewBag.UserId" />
     <input type="hidden" asp-for="Id" />

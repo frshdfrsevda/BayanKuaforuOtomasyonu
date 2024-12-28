@@ -2,6 +2,7 @@
 using BayanKuaforOtomasyonu.Models;
 using BayanKuaforOtomasyonu.Models.Enums;
 using BayanKuaforOtomasyonu.Models.ViewModels.AiQuery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BayanKuaforOtomasyonu.Controllers
 {
+    [Authorize]
     public class AskToAiController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
@@ -126,7 +128,7 @@ namespace BayanKuaforOtomasyonu.Controllers
             var getAiQueryByIdResponse = await client.GetAsync($"https://localhost:7143/api/KuaforApi/GetAllAiQueries/{User.Identity.Name}");
             if (!getAiQueryByIdResponse.IsSuccessStatusCode)
             {
-                return StatusCode((int)getAiQueryByIdResponse.StatusCode, "Veritabanı isteği sırasında bir hata oluştu.");
+                return StatusCode((int)getAiQueryByIdResponse.StatusCode, "Veritabanımızda kayıtlı geçmiş sorgunuz yok");
             }
 
             // 2. Adım: Cevabı al ve JSON olarak deseralize et

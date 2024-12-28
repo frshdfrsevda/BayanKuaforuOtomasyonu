@@ -1,5 +1,6 @@
 ﻿using BayanKuaforOtomasyonu.Models.Entities;
 using BayanKuaforOtomasyonu.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -78,6 +79,7 @@ namespace BayanKuaforOtomasyonu.Controllers
 
             return View(userLogin);
         }
+        [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
@@ -87,6 +89,7 @@ namespace BayanKuaforOtomasyonu.Controllers
         {
             await _roleManager.CreateAsync(new AppRole() { Name= "Admin" });
             await _roleManager.CreateAsync(new AppRole() { Name= "Official" });
+            await _roleManager.CreateAsync(new AppRole() { Name= "User" });
             return RedirectToAction("Index", "Home");
         }
     }

@@ -1,10 +1,12 @@
 ﻿using BayanKuaforOtomasyonu.Models.ViewModels.EmploymentViewModel;
 using BayanKuaforOtomasyonu.Services.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BayanKuaforOtomasyonu.Areas.KuaforYonetimi.Controllers
 {
     [Area("KuaforYonetimi")]
+    [Authorize(Roles ="Admin")]
     public class EmploymentsController : Controller
     {
         private readonly IEmploymentService _employmentService;

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -24,6 +25,12 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
+                            @if (User.IsInRole("Official")){
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Personel Takvim</a>
+                                </li>
+                            }
+                            
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="AskToAi" asp-action="Index">AI Öneri</a>
                             </li>
@@ -48,20 +55,28 @@
             @RenderBody()
         </main>
     </div>
-    <div class="manager-bar-area">
-        <h6 id="hideManagerBarAreaBtn" class="text-end mb-0 py-1 px-2">X</h6>
-        <h3>Kuaför Yönetimi</h3>
-        <ul class="list-unstyled">
-            <li><a asp-area="KuaforYonetimi" asp-controller="UserManagement" asp-action="Index">Kullanıcılar</a></li>
-            <li><a asp-area="KuaforYonetimi" asp-controller="Employments" asp-action="Index">Hizmetler</a></li>
-            <li><a asp-area="KuaforYonetimi" asp-controller="Reservations" asp-action="Index">Randevular</a></li>
-            <li><a asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Tracking">İstatistikler</a></li>
-        </ul>
-    </div>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <div class="manager-bar-area">
+            <h6 id="hideManagerBarAreaBtn" class="text-end mb-0 py-1 px-2">X</h6>
+            <h3>Kuaför Yönetimi</h3>
+            <ul class="list-unstyled">
+                <li><a asp-area="KuaforYonetimi" asp-controller="UserManagement" asp-action="Index">Kullanıcılar</a></li>
+                <li><a asp-area="KuaforYonetimi" asp-controller="Employments" asp-action="Index">Hizmetler</a></li>
+                <li><a asp-area="KuaforYonetimi" asp-controller="Reservations" asp-action="Index">Randevular</a></li>
+                <li><a asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="Tracking">İstatistikler</a></li>
+            </ul>
+        </div>
+    }
+    
     <footer class="border-top footer text-muted">
         <div class="container">
             <ul class="list-unstyled d-flex justify-content-between">
-                <li><button id="showManagerBarAreaBtn" class="btn px-3" type="button">Kuaför Yönetimi</button></li>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <li><button id="showManagerBarAreaBtn" class="btn px-3" type="button">Kuaför Yönetimi</button></li>
+                }
+                
                 <li>&copy; @DateTime.Now.Year - Tüm hakları saklıdır</li>
             </ul>
         </div>

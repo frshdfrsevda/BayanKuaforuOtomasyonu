@@ -8,5 +8,6 @@ namespace BayanKuaforOtomasyonu.Models.Entities
         public ICollection<AppUserEmployement> AppUserEmployements { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
         public ICollection<AiQuery> AiQueries { get; set; }
+        public ICollection<EmployeeShift> EmployeeShifts { get; set; }
     }
 }

@@ -1,0 +1,18 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.ReservationViewModels
+@model List<EmployeeReservationModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach(var item in Model){
+    <div class="row table-card">
+        <div class="col-12 head"><b>@item.ReservationDate.ToShortDateString() | @item.ReservationStart - @item.ReservationEnd | @item.ReservationTotalPrice TL</b></div>
+        <div class="col-3 col-md-1 body"><b>Hizmet</b></div>
+        <div class="col-9 col-md-11 body">@item.EmploymentName  |  @item.EmploymentDuration Dk - @item.EmploymentPrice TL</div>
+
+        <div class="col-3 col-md-1 body"><b>Müşteri</b></div>
+        <div class="col-9 col-md-11 body">@item.ReservationTotalCustomerName</div>
+    </div>
+}
+

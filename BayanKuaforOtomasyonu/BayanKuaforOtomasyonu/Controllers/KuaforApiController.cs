@@ -1,6 +1,7 @@
 ﻿using BayanKuaforOtomasyonu.Models;
 using BayanKuaforOtomasyonu.Models.ViewModels.AiQuery;
 using BayanKuaforOtomasyonu.Services.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OpenAI.Chat;

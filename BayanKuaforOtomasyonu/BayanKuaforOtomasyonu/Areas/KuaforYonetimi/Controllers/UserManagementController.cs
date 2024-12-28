@@ -1,10 +1,12 @@
 ﻿
 using BayanKuaforOtomasyonu.Models.ViewModels.UsersViewModels;
 using BayanKuaforOtomasyonu.Services.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BayanKuaforOtomasyonu.Areas.KuaforYonetimi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Area("KuaforYonetimi")]
     public class UserManagementController : Controller
     {

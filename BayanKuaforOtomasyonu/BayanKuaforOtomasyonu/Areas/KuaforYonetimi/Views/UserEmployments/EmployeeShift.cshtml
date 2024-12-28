@@ -1,0 +1,65 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.EmployeeShiftViewModels
+@model AddEmployeeShiftViewModel
+@{
+    ViewData["Title"] = "EmployeeShift";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Kullanıcı Hizmet Saatleri</h2>
+@if (TempData["Shift"]!=null){
+    <div class="p-3 bg-warning">
+        @TempData["Shift"]
+    </div>
+}
+<form asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="EmployeeShift" class="mb-4">
+    <input type="hidden" asp-for="AppUserId"/>
+    <div class="mb-2">
+        <b><label asp-for="ShiftDay"></label></b>
+        <select asp-for="ShiftDay" asp-items="@ViewBag.Days" class="form-control"></select>
+        <span asp-validation-for="ShiftDay"></span>
+    </div>
+    <div class="mb-2">
+        <b><label asp-for="FirstTİme"></label></b>
+        <input asp-for="FirstTİme" class="form-control" type="time" />
+        <span asp-validation-for="FirstTİme"></span>
+    </div>
+    <div class="mb-2">
+        <b><label asp-for="LastTime"></label></b>
+        <input asp-for="LastTime" class="form-control" type="time" />
+        <span asp-validation-for="LastTime"></span>
+    </div>
+    <div>
+        <button type="submit" class="form-control btn btn-primary">Ekle</button>
+    </div>
+</form>
+@await Component.InvokeAsync("GetEmployeeShifts",new{userid=Model.AppUserId})
+
+@section Scripts {
+    <script>
+        $(document).on("click", ".updateShiftBtn", function () {
+            // Butona ait data-id'yi al
+            let id = $(this).data("id");
+
+            // İlgili input alanlarının değerlerini al
+            let firstTime = $(`#firstTime-${id}`).val();
+            let lastTime = $(`#lastTime-${id}`).val();
+
+            // AJAX isteği ile controller'a gönder
+            $.ajax({
+                url: "/KuaforYonetimi/UserEmployments/UpdateShift", // Controller'a gidecek endpoint
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ id: id, firstTime: firstTime, lastTime: lastTime }),
+                success: function (response) {
+                    // Başarılı olduğunda yapılacaklar
+                    alert("Güncelleme başarılı!");
+                },
+                error: function (xhr, status, error) {
+                    // Hata durumunda yapılacaklar
+                    alert("Güncelleme sırasında bir hata oluştu: " + error);
+                }
+            });
+        });
+
+    </script>
+}

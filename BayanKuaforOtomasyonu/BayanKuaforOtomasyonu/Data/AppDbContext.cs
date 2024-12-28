@@ -32,6 +32,13 @@ namespace BayanKuaforOtomasyonu.Data
                 .HasForeignKey(r => r.AppUserId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            // AppUser ile EmployeeShift arasındaki ilişki
+            modelBuilder.Entity<EmployeeShift>()
+                .HasOne(r => r.AppUser)
+                .WithMany(au => au.EmployeeShifts)
+                .HasForeignKey(r => r.AppUserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             // ReservationDetail ile Reservation arasındaki ilişki
             modelBuilder.Entity<ReservationDetail>()
                 .HasOne(rd => rd.Reservation)
@@ -66,5 +73,6 @@ namespace BayanKuaforOtomasyonu.Data
         public DbSet<ReservationDetail> ReservationDetails { get; set; }
         public DbSet<ReservationStatus> reservationStatuses { get; set; }
         public DbSet<AiQuery> AiQueries { get; set; }
+        public DbSet<EmployeeShift> EmployeeShifts { get; set; }
     }
 }

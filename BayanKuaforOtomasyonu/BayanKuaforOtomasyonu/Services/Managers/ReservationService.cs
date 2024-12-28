@@ -12,14 +12,18 @@ namespace BayanKuaforOtomasyonu.Services.Managers
         private readonly IReservationRepository _reservationRepository;
         private readonly IReservationDetailRepository _reservationDetailRepository;
         private readonly IReservationStatusRepository _reservationStatusRepository;
+        private readonly IUserEmploymentRepository _userEmploymentRepository;
+        private readonly IEmployeeShiftRepository _employeeShiftRepository;
         private readonly UserManager<AppUser> _userManager;
 
-        public ReservationService(IReservationRepository reservationRepository, UserManager<AppUser> userManager, IReservationDetailRepository reservationDetailRepository, IReservationStatusRepository reservationStatusRepository)
+        public ReservationService(IReservationRepository reservationRepository, UserManager<AppUser> userManager, IReservationDetailRepository reservationDetailRepository, IReservationStatusRepository reservationStatusRepository, IUserEmploymentRepository userEmploymentRepository, IEmployeeShiftRepository employeeShiftRepository)
         {
             _reservationRepository = reservationRepository;
             _userManager = userManager;
             _reservationDetailRepository = reservationDetailRepository;
             _reservationStatusRepository = reservationStatusRepository;
+            _userEmploymentRepository = userEmploymentRepository;
+            _employeeShiftRepository = employeeShiftRepository;
         }
 
         public void ApproveRes(int resid)
@@ -60,6 +64,13 @@ namespace BayanKuaforOtomasyonu.Services.Managers
             _reservationStatusRepository.Update(resStatus);
             _reservationStatusRepository.Save();
         }
+
+        public bool? CheckResStatus(int resid)
+        {
+            var res = _reservationStatusRepository.GetByIdWithProps(x=>x.ResId==resid);
+            return res.isStatus;
+        }
+
         public bool ControlReservation(DateTime date, TimeSpan time, int totalDuration)
         {
             var modelEnd = time.Add(TimeSpan.FromMinutes(totalDuration));
@@ -75,6 +86,50 @@ namespace BayanKuaforOtomasyonu.Services.Managers
                 }
             }
             return true;
+        }
+
+        public async Task<(bool, string)> ControlReservation(AddReservationViewModel viewModel)
+        {
+            var user = await _userManager.FindByNameAsync(viewModel.AppUserId);
+            var userReservations = _reservationRepository.GetAllByCondition(x=>x.AppUserId==user.Id && x.ResDate.Date==viewModel.ResDate.Date);
+            var modelStart = viewModel.ResTime;
+            var modelEnd = viewModel.ResTime.Add(TimeSpan.FromMinutes(viewModel.TotalDuration));
+            foreach (var userRes in userReservations)
+            {
+                var start = userRes.ResTime;
+                var end=userRes.ResTime.Add(TimeSpan.FromMinutes(userRes.TotalDuration));
+                if ((start <= modelStart && modelStart <= end) || (start <= modelEnd && modelEnd <= end))
+                    return (false, "Belirtilen saat aralığında müşterinin başka randevusu var");
+            }
+            var modelDay = viewModel.ResDate.DayOfWeek;
+            foreach (var prop in viewModel.ReservationDetailIds.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                var userEmploymentId = int.Parse(prop);
+                var userEmployment = _userEmploymentRepository.GetById(userEmploymentId);
+                var shift = _employeeShiftRepository.GetByIdWithProps(s=>s.AppUserId== userEmployment.AppUserId && s.ShiftDay ==modelDay);
+                if (shift == null)
+                {
+                    return (false, "Çalışan belirtilen gün çalışmıyor");
+                }
+                else if(modelStart<shift.FirstTİme || modelEnd > shift.LastTime)
+                {
+                    return (false, "Belirtilen saatler çalışanın mesaisi dışında");
+                }
+                var appUserEmployments = _userEmploymentRepository.GetAllByCondition(ap => ap.AppUserId == userEmployment.AppUserId);
+                foreach (var item in appUserEmployments) {
+                    var resDetails = _reservationDetailRepository.GetAllByCondition(rd => rd.AppUserEmploymentId == item.Id && rd.Reservation.ResDate.Date==viewModel.ResDate.Date, "Reservation");
+                    foreach(var resDetail in resDetails)
+                    {
+                        var resStart = resDetail.Reservation.ResTime;
+                        var resEnd = resDetail.Reservation.ResTime.Add(TimeSpan.FromMinutes(resDetail.Reservation.TotalDuration));
+                        if((resStart<=modelStart &&modelStart<=resEnd)||(resStart <= modelEnd && modelEnd <= resEnd))
+                        {
+                            return (false, "Belirtilen saatler çalışanın başka randevusu bulunuyor");
+                        }
+                    }
+                }
+            }
+            return (true, "");
         }
 
         public async Task CreateReservationAsync(AddReservationViewModel viewModel)

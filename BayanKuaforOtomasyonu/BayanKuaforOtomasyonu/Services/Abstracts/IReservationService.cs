@@ -9,9 +9,11 @@ namespace BayanKuaforOtomasyonu.Services.Abstracts
         List<ReservationViewModel> GetAllByUser(string username);
         (bool,string) ChangeReservationDate(ChangeDateResViewModel model);
         bool ControlReservation(DateTime date, TimeSpan time, int totalDuration);
+        Task<(bool,string)> ControlReservation(AddReservationViewModel viewModel);
         void ChangeStatusForManager(int resid);
         void ChangeStatusForUser(int resid);
         void DeclineRes(int resid);
         void ApproveRes(int resid);
+        bool? CheckResStatus(int resid);
     }
 }

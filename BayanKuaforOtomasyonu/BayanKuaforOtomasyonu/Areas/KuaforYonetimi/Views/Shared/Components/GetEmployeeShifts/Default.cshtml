@@ -1,0 +1,30 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.EmployeeShiftViewModels
+@model List<EmployeeShiftViewModel>
+
+<table class="table table-striped">
+    <tr class="tracking">
+        <th>Gün</th>
+        <th>Başlama</th>
+        <th>Çıkma</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        var day = item.ShiftDay.ToString() == "Monday" ? "Pazartesi" :
+        item.ShiftDay.ToString() == "Tuesday" ? "Salı" :
+        item.ShiftDay.ToString() == "Wednesday" ? "Çarşamba" :
+        item.ShiftDay.ToString() == "Thursday" ? "Perşembe" :
+        item.ShiftDay.ToString() == "Friday" ? "Cuma" :
+        item.ShiftDay.ToString() == "Saturday" ? "Cumartesi" :
+        "Pazar";
+
+        <tr>
+            <td>@day</td>
+            <td><input id="firstTime-@item.Id" value="@item.FirstTİme" type="time" /></td>
+            <td><input id="lastTime-@item.Id" value="@item.LastTime" type="time" /></td>
+            <td>
+                <button type="button" data-id="@item.Id" class="btn btn-default-small updateShiftBtn">Güncelle</button>
+                <a asp-area="KuaforYonetimi" asp-controller="UserEmployments" asp-action="DeleteShift" asp-route-id="@item.Id" class="btn btn-default-small">Sil</a></td>
+        </tr>
+    }
+</table>

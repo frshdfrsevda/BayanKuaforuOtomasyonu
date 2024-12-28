@@ -2,10 +2,12 @@ using System.Diagnostics;
 using BayanKuaforOtomasyonu.Models;
 using BayanKuaforOtomasyonu.Models.ViewModels.ReservationViewModels;
 using BayanKuaforOtomasyonu.Services.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BayanKuaforOtomasyonu.Controllers
 {
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -31,6 +33,7 @@ namespace BayanKuaforOtomasyonu.Controllers
         {
             return Json(_userEmploymentService.GetUserEmploymentById(userId));
         }
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateReservation(AddReservationViewModel model)
         {
@@ -45,15 +48,22 @@ namespace BayanKuaforOtomasyonu.Controllers
                 return ViewComponent("PostReservation", model);
             }
             model.AppUserId = User.Identity.Name;
+            var (isOk,msg)=await _reservationService.ControlReservation(model);
+            if (!isOk)
+            {
+                return Json(new { success = true, message = msg });
+            }
             await _reservationService.CreateReservationAsync(model);
 
-            return Json(new { success = true, message = "ok" });
+            return Json(new { success = true, message = "Randevu baþarýyla oluþturuldu" });
         }
         [HttpGet]
+        [Authorize]
         public IActionResult Reservations()
         {
             return View(_reservationService.GetAllByUser(User.Identity.Name));
         }
+        [Authorize]
         [HttpPost]
         public IActionResult UpdateReservationDate([FromBody] GeciciModel geciciModel)
         {
@@ -72,11 +82,13 @@ namespace BayanKuaforOtomasyonu.Controllers
                 _reservationService.ChangeStatusForUser(model.Id);
             return Json(new { success = true, message = msg });
         }
+        [Authorize]
         public IActionResult Decline(int resid)
         {
             _reservationService.DeclineRes(resid);
             return RedirectToAction("Reservations", "Home", new { area = "" });
         }
+        [Authorize]
         public IActionResult Accept(int resid)
         {
             _reservationService.ChangeStatusForUser(resid);

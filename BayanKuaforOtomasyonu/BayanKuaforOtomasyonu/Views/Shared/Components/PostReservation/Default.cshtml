@@ -22,15 +22,19 @@
     </div>
     <div>
         <label asp-for="ResDate" class="form-label"></label>
-        <input asp-for="ResDate" class="form-control" />
+        <input asp-for="ResDate" class="form-control" type="datetime-local"/>
         <span asp-validation-for="ResDate" class="text-danger"></span>
     </div>
     <div>
         <label asp-for="ResTime" class="form-label"></label>
-        <input asp-for="ResTime" class="form-control" />
+        <input asp-for="ResTime" class="form-control" type="time"/>
         <span asp-validation-for="ResTime" class="text-danger"></span>
     </div>
     <div>
-        <button class="btn btn-secondary" type="submit">Oluştur</button>
+        @if(User.Identity.IsAuthenticated){
+            <button class="btn btn-secondary" type="submit">Oluştur</button>
+        }else{
+            <a class="btn btn-secondary" asp-area="" asp-controller="Access" asp-action="Login">Giriş yap</a>
+        }
     </div>
 </form>

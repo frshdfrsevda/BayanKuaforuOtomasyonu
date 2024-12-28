@@ -302,3 +302,20 @@ tr,td,th,table{
     padding: 1em 2em;
      background:linear-gradient(to bottom right,#e5e5e5,white,#e5e5e5);
 }
+/*
+
+*/
+.table-card {
+    border: 1px solid #e5e5e5;
+    margin: .5em 0;
+    padding: .5em;
+}
+.table-card .head{
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom:.5em;
+    margin-bottom:.5em;
+}
+.table-card .body b{
+    border-right: 1px solid #e5e5e5;
+    padding-right:2em;
+}

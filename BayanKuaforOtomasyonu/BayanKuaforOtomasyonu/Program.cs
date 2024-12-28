@@ -59,6 +59,8 @@ builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<ITrackingService, TrackingService>();
 builder.Services.AddScoped<IAiQueryRepository, AiQueryRepository>();
 builder.Services.AddScoped<IAiQueryService, AiQueryService>();
+builder.Services.AddScoped<IEmployeeShiftRepository, EmployeeShiftRepository>();
+builder.Services.AddScoped<IEmployeeShiftService, EmployeeShiftService>();
 
 
 var app = builder.Build();
