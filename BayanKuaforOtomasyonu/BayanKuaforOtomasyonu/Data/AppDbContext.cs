@@ -52,11 +52,19 @@ namespace BayanKuaforOtomasyonu.Data
                 .WithMany()
                 .HasForeignKey(r => r.ResId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // AiQuery ile AppUser arasındaki ilişki
+            modelBuilder.Entity<AiQuery>()
+              .HasOne(aq => aq.AppUser)
+              .WithMany(au => au.AiQueries)
+              .HasForeignKey(aq => aq.AppUserId)
+              .OnDelete(DeleteBehavior.NoAction);
         }
         public DbSet<Employment> Employments { get; set; }
         public DbSet<AppUserEmployement> AppUserEmployement { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ReservationDetail> ReservationDetails { get; set; }
         public DbSet<ReservationStatus> reservationStatuses { get; set; }
+        public DbSet<AiQuery> AiQueries { get; set; }
     }
 }

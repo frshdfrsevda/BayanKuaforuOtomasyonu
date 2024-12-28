@@ -1,0 +1,40 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.AiQuery
+@model List<AiQueryViewModel>
+@{
+    ViewData["Title"] = "AiQueries";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mb-4">Yapay Zeka Önerileri</h2>
+@foreach(var suggest in Model){
+    <div class="ai-suggestions">
+        <h4>@suggest.CreationDate Tarihli Öneri<button data-id="@suggest.Id" class="detail-ai-query btn btn-default-small float-end">Göster</button></h4>
+        <div id="response-@suggest.Id" style="display:none">
+            @Html.Raw(suggest.Response)
+        </div>
+    </div>
+}
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            // Butona tıklanma olayı
+            $(".detail-ai-query").click(function () {
+                // Butona ait data-id özelliğini alıyoruz
+                var id = $(this).data("id");
+
+                // İlgili div'in id'sini oluşturuyoruz
+                var responseDiv = $("#response-" + id);
+
+                // Cevabı açıp kapatıyoruz
+                responseDiv.toggle(); // Eğer açık değilse açar, açık ise kapatır
+                // Butonun metnini değiştiriyoruz
+                var button = $(this);
+                if (responseDiv.is(":visible")) {
+                    button.text("Gizle");  // Cevap görünüyorsa "Gizle" yazısı
+                } else {
+                    button.text("Göster");  // Cevap gizliyse "Göster" yazısı
+                }
+            });
+        });
+    </script>
+}

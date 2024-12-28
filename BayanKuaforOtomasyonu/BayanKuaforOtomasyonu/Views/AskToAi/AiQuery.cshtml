@@ -1,0 +1,12 @@
+﻿@using BayanKuaforOtomasyonu.Models.ViewModels.AiQuery
+@model AiQueryViewModel
+@{
+    ViewData["Title"] = "AiQuery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Yapay Zekanın Önerisi - @Model.CreationDate</h2>
+<div class="p-4">
+    @Html.Raw(Model.Response)
+</div>
+

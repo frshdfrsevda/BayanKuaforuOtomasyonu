@@ -284,3 +284,21 @@ tr,td,th,table{
     padding:0;
     width:auto;
 }
+
+/*
+    AI
+*/
+.ai-suggestions {
+    margin-bottom: 1em;
+    border: 1px solid black;
+}
+.ai-suggestions h4 {
+    border-bottom: 1px solid black;
+    padding: 1em;
+    margin-bottom:0;
+     background:linear-gradient(to bottom,#fcfbc6,#e5e5e5);
+}
+.ai-suggestions div {
+    padding: 1em 2em;
+     background:linear-gradient(to bottom right,#e5e5e5,white,#e5e5e5);
+}

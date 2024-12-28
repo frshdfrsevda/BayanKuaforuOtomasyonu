@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddHttpClient(); // HttpClient'ý ekle
 //Database baglantýsý
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -57,6 +57,8 @@ builder.Services.AddScoped<IReservationDetailRepository, ReservationDetailReposi
 builder.Services.AddScoped<IReservationStatusRepository, ReservationStatusRepository>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<ITrackingService, TrackingService>();
+builder.Services.AddScoped<IAiQueryRepository, AiQueryRepository>();
+builder.Services.AddScoped<IAiQueryService, AiQueryService>();
 
 
 var app = builder.Build();

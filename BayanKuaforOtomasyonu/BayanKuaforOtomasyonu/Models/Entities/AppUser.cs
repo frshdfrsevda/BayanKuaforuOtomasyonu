@@ -7,5 +7,6 @@ namespace BayanKuaforOtomasyonu.Models.Entities
         public string NameSurname { get; set; }
         public ICollection<AppUserEmployement> AppUserEmployements { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<AiQuery> AiQueries { get; set; }
     }
 }
